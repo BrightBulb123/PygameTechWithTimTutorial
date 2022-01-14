@@ -18,9 +18,13 @@ pygame.display.set_caption("Game Test")
 FPS = REFRESH_RATE
 
 # Making some pre-defined colours based on RGB values
-COLOURS = {"white": (255, 255, 255), "red": (255, 0, 0),
-           "green": (0, 255, 0),"blue": (0, 0, 255),
-           "black": (0, 0, 0)}
+COLOURS = {"WHITE": (255, 255, 255), "RED": (255, 0, 0),
+           "GREEN": (0, 255, 0),"BLUE": (0, 0, 255),
+           "BLACK": (0, 0, 0)}
+
+# Importing the assets
+SPACESHIPS = {"YELLOW": os.path.join("Assets", "spaceship_yellow.png"),
+              "RED": os.path.join("Assets", "spaceship_red.png")}
 
 
 # Drawing something on the main window (and updating)

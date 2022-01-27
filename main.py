@@ -88,12 +88,32 @@ class Player(Ship):
         self.max_health = 100
 
 
+class Enemy(Ship):
+    COLOUR_MAP = {
+        "red": (RED_SPACE_SHIP, RED_LASER),
+        "green": (GREEN_SPACE_SHIP, GREEN_LASER),
+        "blue": (BLUE_SPACE_SHIP, BLUE_LASER)
+        }
+
+    def __init__(self, x, y, colour, health=100) -> None:
+        super().__init__(x, y, health)
+        self.ship_img, self.laser_img = self.COLOUR_MAP[colour]
+        self.mask = pygame.mask.from_surface(self.ship_img)
+
+    def move(self, vel):
+        self.y -= vel
+
+
 def main():
     running = True
     FPS = REFRESH_RATE
     level = 1
     lives = 5
     main_font = pygame.font.SysFont("Fira Code Retina", (35))
+
+    enemies = []
+    wave_length = 5
+    enemy_vel = 1
 
     player_vel = 5
 
@@ -110,6 +130,9 @@ def main():
         WIN.blit(lives_label, (10, 10))
         WIN.blit(level_label, ((WIDTH-(level_label.get_width()))-10, 10))
 
+        for enemy in enemies:
+            enemy.draw(WIN)
+
         player.draw(WIN)
 
         pygame.display.update()
@@ -117,7 +140,12 @@ def main():
 
     while running:
         clock.tick(FPS)
-        redraw_window()
+
+        if len(enemies) == 0:
+            level += 1
+            wave_length += 5
+            for _ in range(wave_length):
+                pass
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -132,6 +160,8 @@ def main():
             player.y -= player_vel
         if (keys[pygame.K_DOWN] or keys[pygame.K_s]) and (((player.y + player_vel) + player.get_height()) < HEIGHT):  # Down
             player.y += player_vel
+
+        redraw_window()
 
 
 if __name__ == "__main__":
